@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block content %}
+<script>
+
+  function plot(x, y, id, color, min, max) {
+    var ctx = document.getElementById(id).getContext("2d");
+    var lineChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: x,
+        datasets: [
+          {
+            label: "Values",
+            data: y,
+            fill: false,
+            borderColor: color,
+            lineTension: 0.1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [{
+            display: true,
+            ticks: {
+              suggestedMin: min,
+              suggestedMax: max
+            }
+          }]
+        },
+        animation: {
+          duration: 0
+        }
+      }
+    });
+  }
+</script>
+<div class="content-section">
+  <h2>Light Intensity</h2>
+  <p>LDR sensor measures the intensity of light in the greenshouse.The readings are scaled to 0-100. If the value is
+    lesser that the given limit, the artificial light is turned
+    on.</p>
+
+  <b>Value: <span id="lightVal">0</span>%</b> <br>
+  <b>Limit: 20%</b>
+  <canvas id="lightChart" width="1070" height="400"></canvas>
+</div>
+
+<div class="content-section">
+  <h2>Humidity</h2>
+  <p>The DHT11 sensor measures the humidity in the air. Typical values lie between 20-80%</p>
+
+  <b>Value: <span id="humidityVal">0</span>%</b> <br>
+  <canvas id="humidityChart" width="1070" height="400"></canvas>
+</div>
+
+<div class="content-section">
+  <h2>Temperature</h2>
+  <p>The DHT11 sensor measures the temperature of the greenhouse. If the temperature is more than the given limit, a
+    vent or cooler can be
+    turned on.</p>
+
+  <b>Value (in C): <span id="tempCVal">0</span>&#8451;</b> <br>
+  <b>Value (in F): <span id="tempFVal">0</span>&#8457;</b> <br>
+  <b>Limit: 30&#8451;</b>
+  <canvas id="tempChart" width="1070" height="400"></canvas>
+</div>
+
+<div class="content-section">
+  <h2>Soil Moisture</h2>
+  <p>The soil moisture sensor measures the water level of the soil. The sensor values are scaled to 0-100. If the value
+    is lower than the given limit, then you need to water the plant.</p>
+
+  <b>Value: <span id="moistureVal">0</span>%</b> <br>
+  <b>Limit: 50%</b>
+  <canvas id="moistureChart" width="1070" height="400"></canvas>
+</div>
+<script>
+
+
+  function update() {
+
+    var getData = $.get('/data');
+    getData.done(function (data) {
+      plot(data.light.x, data.light.y, "lightChart", "yellow", 0, 100);
+      $("#lightVal").text(data.light.y.at(-1));
+
+      plot(data.humidity.x, data.humidity.y, "humidityChart", "blue", 0, 100);
+      $("#humidityVal").text(data.humidity.y.at(-1));
+
+      plot(data.tempC.x, data.tempC.y, "tempChart", "red", 0, 100);
+      $("#tempCVal").text(data.tempC.y.at(-1));
+      $("#tempFVal").text(data.tempF);
+
+      plot(data.moisture.x, data.moisture.y, "moistureChart", "teal", 0, 100);
+      $("#moistureVal").text(data.moisture.y.at(-1));
+
+    });
+  }
+
+
+  const interval = setInterval(update, 1500);
+
+
+</script>
+{% endblock content %}
