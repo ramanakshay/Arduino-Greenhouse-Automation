@@ -7,7 +7,7 @@ In this project, I build an Automated Greenhouse system using Arduino UNO which 
 ## Block Diagram
 
 <p align = "center">
-<img align="center" src="images/block_diagram.png" alt="Hash Tree" width = "750" />
+<img align="center" src="images/block_diagram.png" alt="Hash Tree" width = "600" />
 </p>
 
 ## Sensors
@@ -30,7 +30,24 @@ The water level of the soil is measured using a soil moisture sensor. The system
 
 The web application is built using flask, which is a python framework to make websites. The Arduino outputs the sensor reading in the serial port in the form of a string of values separated by spaces. The application read these values from the serial port. The app then stores these values (as JSON) and generates live charts of the data. The charts have been made using chart.js which is an open-source library for creating graphs. I have also used JQuery to update the chart automatically without page reloading.
 
+### Screenshots
+
+<p align = "center">
+<img align="center" src="images/screenshot1.png" alt="app screenshots"/>
+</p>
+
+
+<p align = "center">
+<img align="center" src="images/screenshot2.png" alt="app screenshots" />
+</p>
+
 ## Photos
+
+| | |
+|:-------------------------:|:-------------------------:|
+|<img width="1604" alt="frontview" src="images/front_view.png">|<img width="1604" alt="covering light sensor" src="images/covering_light_sensor.png">|
+|<img width="1604" alt="in water" src="images/in_water.png">|<img width="1604" alt="out of water" src="images/out_of_water.png">|
+
 
 ## References
 
